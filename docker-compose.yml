@@ -1,0 +1,27 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: queuedb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./demo
+    container_name: queue-backend
+    ports:
+      - "9090:9090"
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./smart-queue-new
+    container_name: queue-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
